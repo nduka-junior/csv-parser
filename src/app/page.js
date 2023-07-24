@@ -1,91 +1,83 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from './page.module.css'
+"use client";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
 
-const inter = Inter({ subsets: ['latin'] })
+import { useEffect, useState } from "react";
+import { parse } from "papaparse";
+import Tabb from "@/components/Tabb";
 
 export default function Home() {
+  const [file, setFile] = useState(null);
+  const [data, setData] = useState(null);
+  const [search, setSearch] = useState("");
+  const [mainData, setMainData] = useState(null);
+  const handlefile = (e) => {
+    setFile(e.target.files);
+    console.log(file);
+  };
+  const handleSearch = () => {
+    const getSearch = search.trim().toLowerCase();
+    console.log(getSearch);
+    const filterData = mainData.data.filter((items) => {
+      return Object.values(items).some((value) => {
+        console.log(value);
+        return value.toLowerCase().includes(getSearch);
+      });
+    });
+    setData({ ...data, data: filterData, filterData });
+    console.log(filterData);
+    if (search.length === 0) setData(mainData);
+  };
+  useEffect(() => {
+    if (data) {
+      handleSearch();
+      console.log(search);
+    }
+  }, [search]);
+  const readfile = () => {
+    if (!file) {
+      return alert("Please Upload a file");
+    }
+    console.log("working!!");
+    console.log(file);
+    const reader = new FileReader();
+    reader.onload = () => {
+      const csv = reader.result;
+      console.log(csv);
+      const results = parse(csv, { header: true });
+      console.log(results);
+      setData(results);
+      setMainData(results);
+    };
+    reader.readAsText(file[0]);
+    setFile("");
+  };
+
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <div className="p-5">
+      <div className="!mx-[20vw] flex flex-col justify-center">
+        <div className="flex justify-center items-center  ">
+          <Input
+            id="picture"
+            type="file"
+            onChange={handlefile}
+            className="mr-4"
+          />
+          <Button variant="outline" onClick={() => readfile()}>
+            Parse
+          </Button>
         </div>
-      </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+        <Input
+          type="text"
+          placeholder="Search"
+          className=" mt-3"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
-        <div className={styles.thirteen}>
-          <Image src="/thirteen.svg" alt="13" width={40} height={31} priority />
-        </div>
       </div>
 
-      <div className={styles.grid}>
-        <a
-          href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+      <Tabb data={data} />
+    </div>
+  );
 }
