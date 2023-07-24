@@ -63,6 +63,7 @@ export default function Home() {
             type="file"
             onChange={handlefile}
             className="mr-4"
+            accept=".csv"
           />
           <Button variant="outline" onClick={() => readfile()}>
             Parse
