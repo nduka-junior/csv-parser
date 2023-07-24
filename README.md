@@ -12,7 +12,7 @@ To use the CSV file parser component, you need to follow these steps:
 import Tabb from "@/components/Tabb";
 ```
 
-2. Use the parser component in your React application:
+2. Use the parser component in your React application:   
 
 ```jsx
 export default function Home() {
