@@ -1,16 +1,16 @@
 "use client"
+import Tabb from '@/components/Tabb'
 import React from 'react'
 import { useContext } from 'react'
 import { Context } from '@/components/ContextProvider'
 import { useRouter } from 'next/navigation'
 function page() {
-  const router = useRouter();
+    const { data,user} = useContext(Context)
 
-  const { user } = useContext(Context)
-  if (!user) return router.push('/login')
-  
+    const router = useRouter()
+    if(!data) return router.push(`/user/${user?.uid}`)
   return (
-    <div className='flex h-[80vh] items-center justify-center'> Coming soon...</div>
+    <div className='p-10'><Tabb /></div>
   )
 }
 
