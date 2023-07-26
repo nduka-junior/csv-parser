@@ -170,9 +170,8 @@ function ContextProvider({ children }) {
       if (documentSnapshot.exists()) {
         // Document exists, you can access the data here
         const documentData = documentSnapshot.data();
-        console.log(documentData);
-        setData(documentData);
-        setMainData(documentData);
+        setData(documentData.data);
+        setMainData(documentData.data);
       } else {
         // Document doesn't exist
         return null;

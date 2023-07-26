@@ -19,7 +19,7 @@ function Tabb() {
   const inputRef = useRef(0);
   const { name } = useContext(Context);
 
-  console.log(name);
+  
   return (
     data && (
       <>

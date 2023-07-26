@@ -6,7 +6,7 @@ import { auth } from "@/lib/firebase";
 import { useContext } from "react";
 import { Context } from "@/components/ContextProvider";
 import Tabb from "@/components/Tabb";
-function page({ params: { parserid } }) {
+function Page({ params: { parserid } }) {
   const router = useRouter();
   const [user, loading, error] = useAuthState(auth);
   const { getDocOnId } = useContext(Context);
@@ -26,4 +26,4 @@ function page({ params: { parserid } }) {
   );
 }
 
-export default page;
+export default Page;
