@@ -12,7 +12,7 @@ function Page() {
   }, []);
   return (
     <div className="flex h-[80vh] items-center justify-center">
-      {" "}
+
       Coming soon...
     </div>
   );

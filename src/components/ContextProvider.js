@@ -34,6 +34,7 @@ function ContextProvider({ children }) {
         // The signed-in user info.
         const user = result.user;
         localStorage.setItem("user", true);
+        router.push(`user/${user.uid}`);
         console.log(user);
       })
       .catch((error) => {
