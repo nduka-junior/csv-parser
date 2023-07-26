@@ -1,18 +1,20 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import google from "@/static/google_light.png";
 import { useContext } from "react";
 import { Context } from "@/components/ContextProvider";
 import { useRouter } from "next/navigation";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 function Page() {
   const { signInWithGoogle, user, error } = useContext(Context);
 
   const router = useRouter();
-  if (user) router.push(`/user/${user.uid}}`);
-  if (error) toast.error(error);
+  useEffect(() => {
+      if (user) router.push(`/user/${user.uid}}`);
+      if (error) toast.error(error);
+   }, []);
   return (
     <div className="w-full h-[80vh] flex items-center justify-center">
       <Button

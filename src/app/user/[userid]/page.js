@@ -4,15 +4,7 @@ import { toast } from "react-toastify";
 import { useContext } from "react";
 import { Context } from "@/components/ContextProvider";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import Modal from "@/components/Modal";
 
 function Page() {
@@ -24,14 +16,12 @@ function Page() {
       localStorage.removeItem("user");
     }
   }, []);
-  if (!user) return router.push("/login");
+  useEffect(() => {
+    if (!user) return router.push("/login");
+  }, []);
   return (
-    <div
-      className="flex justify-center items-center h-[60vh] w-full"  
-    
-    >
+    <div className="flex justify-center items-center h-[60vh] w-full">
       <h1 className="mr-5">New AttendX</h1>
-     
 
       <Dialog>
         <DialogTrigger>

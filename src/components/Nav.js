@@ -3,7 +3,6 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { auth } from "@/lib/firebase";
 import { useRouter } from "next/navigation";
-import { useContext } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import UserInfo from "./UserInfo";
 function Nav() {

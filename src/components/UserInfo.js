@@ -2,7 +2,7 @@ import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { auth } from "@/lib/firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import Link from "next/link";
+import  Link  from "next/link";
 function UserInfo() {
   const [user, loading, error] = useAuthState(auth);
   function getInitials(fullName) {
