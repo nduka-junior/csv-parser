@@ -14,13 +14,15 @@ import { Context } from "@/components/ContextProvider";
 
 function Modal() {
   
-    const { handlefile, readfile } = useContext(Context);
+    const { handlefile, readfile,name , setName } = useContext(Context);
   return (
     <DialogContent>
       <DialogHeader>
         <DialogTitle className="mb-[20px]">Select a file to parse</DialogTitle>
         <DialogDescription>
+          <Input type="text" placeholder="Name" className='my-3 text-lg' value={name} onChange={ (e) => setName(e.target.value) } />
           <div className="flex justify-center items-center  ">
+
             <Input
               type="file"
               onChange={handlefile}

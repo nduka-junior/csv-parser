@@ -44,15 +44,10 @@ function Tabb() {
                   return <TableHead key={id}>{k}</TableHead>;
                 })}
 
-              <TableHead>Attendance</TableHead>
+              {/* <TableHead>Attendance</TableHead> */}
             </TableRow>
           </TableHeader>
           <TableBody>
-            {/* <TableRow>
-          <TableCell>{Object.values}</TableCell>
-          <TableCell>{k.Description}</TableCell>
-          <TableCell>{k.Founded}</TableCell>
-        </TableRow> */}
             {data &&
               data.data.map((k, id) => {
                 return (
@@ -65,7 +60,7 @@ function Tabb() {
                         </TableCell>
                       );
                     })}
-                    {
+                    {/* {
                       <TableCell key={id}>
                         <Input
                           type="number"
@@ -74,7 +69,7 @@ function Tabb() {
                           onChange={(e) => setInput(e.target.value)}
                         />
                       </TableCell>
-                    }
+                    } */}
                   </TableRow>
                 );
               })}

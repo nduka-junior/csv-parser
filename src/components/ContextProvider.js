@@ -5,22 +5,46 @@ import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { parse } from "papaparse";
 import { useRouter } from "next/navigation";
+import { db } from "@/lib/firebase";
+import {
+  collection,
+  doc,
+  setDoc,
+  query,
+  getDocs,
+  where,
+  getDoc,
+} from "firebase/firestore";
+import { toast } from "react-toastify";
 export const Context = createContext({
   user: null,
   loading: true,
   error: null,
   data: null,
   mainData: null,
+  name: "",
+  firestoreData: "",
   signInWithGoogle: () => {},
   setSearch: () => {},
   handlefile: () => {},
   handleSearch: () => {},
   readfile: () => {},
+  setName: () => {},
+  getDocOnId : () => {},
 });
 function ContextProvider({ children }) {
   const router = useRouter();
   const [user, loading, error] = useAuthState(auth);
+  const [file, setFile] = useState(null);
+
+  const [data, setData] = useState(null);
+  const [search, setSearch] = useState("");
+  const [mainData, setMainData] = useState(null);
+  const [name, setName] = useState("");
+  const [firestoreData, setFirestoreData] = useState(null);
+  console.log(name);
   // PROVIDER
+
   const googleProvider = new GoogleAuthProvider();
   // SIGN IN WITH GOOGLE
   const signInWithGoogle = async () => {
@@ -50,12 +74,14 @@ function ContextProvider({ children }) {
       });
   };
 
+  useEffect(() => {
+    if (data) {
+      handleSearch();
+      console.log(search);
+    }
+  }, [search]);
   // cSV PARSER HANDLING
-  const [file, setFile] = useState(null);
 
-  const [data, setData] = useState(null);
-  const [search, setSearch] = useState("");
-  const [mainData, setMainData] = useState(null);
   const handlefile = (e) => {
     setFile(e.target.files);
     console.log(file);
@@ -73,15 +99,13 @@ function ContextProvider({ children }) {
     console.log(filterData);
     if (search.length === 0) setData(mainData);
   };
-  useEffect(() => {
-    if (data) {
-      handleSearch();
-      console.log(search);
-    }
-  }, [search]);
+
   const readfile = () => {
     if (!file) {
-      return alert("Please Upload a file");
+      return toast.error("Please Upload a file");
+    }
+    if (name.trim().length === 0) {
+      return toast.error("Please Enter a name");
     }
     console.log("working!!");
     console.log(file);
@@ -93,22 +117,89 @@ function ContextProvider({ children }) {
       console.log(results);
       setData(results);
       setMainData(results);
+      addData(results);
     };
     reader.readAsText(file[0]);
     setFile("");
     router.push("/parser");
   };
+
+  // DATA UPLOAD
+  const addData = async (data) => {
+    try {
+      const docRef = doc(collection(db, "datas"));
+      await setDoc(docRef, {
+        data,
+        dataName: name.trim(),
+        userid: user.uid,
+        name: user.displayName,
+        photo: user.photoURL,
+        date: new Date().getTime(),
+        id: docRef.id,
+      });
+      console.log("Document written with ID: ", docRef.id);
+      setName("");
+      toast.success("Data added successfully");
+    } catch (e) {
+      console.error("Error adding document: ", e);
+      toast.error(`Error adding document ${e}`);
+    }
+  };
+  const getDatas = async (currentUserUid) => {
+    const q = query(
+      collection(db, "datas"),
+      where("userid", "==", currentUserUid)
+    );
+
+    // Get the documents that match the query
+    const querySnapshot = await getDocs(q);
+
+    // Extract the data from the query results
+    const userDatas = querySnapshot.docs.map((doc) => doc.data());
+
+    // Now you have an array "userDatas" containing all the documents that match the userid
+    setFirestoreData(userDatas);
+  };
+  const getDocOnId = async (id) => {
+    const docRef = doc(db, "datas", id);
+
+    // Use the getDoc() method to fetch the document data
+    try {
+      const documentSnapshot = await getDoc(docRef);
+
+      if (documentSnapshot.exists()) {
+        // Document exists, you can access the data here
+        const documentData = documentSnapshot.data();
+        console.log(documentData);
+        setData(documentData);
+        setMainData(documentData);
+      } else {
+        // Document doesn't exist
+        return null;
+      }
+    } catch (error) {
+      console.log("Error getting document:", error);
+      return error;
+    }
+  };
+  useEffect(() => {
+    if (user) getDatas(user.uid);
+  }, [user]);
   const contextValue = {
     user,
     loading,
     error,
     data,
     mainData,
+    name,
+    firestoreData,
     signInWithGoogle,
     setSearch,
     handlefile,
     handleSearch,
     readfile,
+    setName,
+    getDocOnId,
   };
   return <Context.Provider value={contextValue}>{children}</Context.Provider>;
 }

@@ -7,12 +7,13 @@ import { useContext } from "react";
 import { Context } from "@/components/ContextProvider";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { auth } from "@/lib/firebase";
 function Page() {
   const { signInWithGoogle, user, error } = useContext(Context);
 
   const router = useRouter();
   useEffect(() => {
-    if (user) router.push(`/user/${user.uid}}`);
+    if (user) router.push(`/`);
     if (error) toast.error(error);
   }, []);
   return (
