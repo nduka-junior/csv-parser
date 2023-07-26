@@ -12,9 +12,9 @@ function Page() {
 
   const router = useRouter();
   useEffect(() => {
-      if (user) router.push(`/user/${user.uid}}`);
-      if (error) toast.error(error);
-   }, []);
+    if (user) router.push(`/user/${user.uid}}`);
+    if (error) toast.error(error);
+  }, []);
   return (
     <div className="w-full h-[80vh] flex items-center justify-center">
       <Button
