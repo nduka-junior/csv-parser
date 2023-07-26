@@ -4,7 +4,7 @@ import React from 'react'
 import { useContext } from 'react'
 import { Context } from '@/components/ContextProvider'
 import { useRouter } from 'next/navigation'
-function page() {
+function Page() {
     const { data,user} = useContext(Context)
 
     const router = useRouter()
@@ -14,4 +14,4 @@ function page() {
   )
 }
 
-export default page
+export default Page

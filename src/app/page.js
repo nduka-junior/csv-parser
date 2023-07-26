@@ -3,7 +3,7 @@ import React from 'react'
 import { useContext } from 'react'
 import { Context } from '@/components/ContextProvider'
 import { useRouter } from 'next/navigation'
-function page() {
+function Page() {
   const router = useRouter();
 
   const { user } = useContext(Context)
@@ -14,4 +14,4 @@ function page() {
   )
 }
 
-export default page
+export default Page

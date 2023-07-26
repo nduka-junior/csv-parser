@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import Modal from "@/components/Modal";
 
-function page() {
+function Page() {
   const router = useRouter();
   const { user } = useContext(Context);
   useEffect(() => {
@@ -49,4 +49,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;

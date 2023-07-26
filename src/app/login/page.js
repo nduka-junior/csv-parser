@@ -7,7 +7,7 @@ import { useContext } from "react";
 import { Context } from "@/components/ContextProvider";
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
-function page() {
+function Page() {
   const { signInWithGoogle, user, error } = useContext(Context);
 
   const router = useRouter();
@@ -28,4 +28,4 @@ function page() {
   );
 }
 
-export default page;
+export default Page;
