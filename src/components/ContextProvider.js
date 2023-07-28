@@ -42,7 +42,6 @@ function ContextProvider({ children }) {
   const [mainData, setMainData] = useState(null);
   const [name, setName] = useState("");
   const [firestoreData, setFirestoreData] = useState(null);
-  console.log(name);
   // PROVIDER
 
   const googleProvider = new GoogleAuthProvider();
